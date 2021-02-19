@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
   
     console.log('Login test')
     passport.authenticate('local', {
-      successRedirect: '/',
+      successRedirect: '/user-home',
       failureRedirect: '/login',
       failureFlash: true,
   

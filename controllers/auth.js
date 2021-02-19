@@ -1,22 +1,19 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
-const auth = async(req, res, next) => {
-  console.log(req.cookies)
-    const token = req.cookies.token
-    const data = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('the data is ', data)
-    try {
-        const user = await User.findOne({ _id: data._id })
-        if (!user) {
-            throw new Error()
+const auth = {
+    ensureAuthenticated: function(req, res, next) {
+        if (req.isAuthenticated()) {
+          return next();
         }
-        req.user = user
-        req.token = token
-        next()
-    } catch (error) {
-        res.status(401).send({ error: 'Not authorized to access this resource' })
-    }
-
+        res.redirect('/');
+      },
+      forwardAuthenticated: function(req, res, next) {
+        if (!req.isAuthenticated()) {
+          return next();
+        }
+        res.redirect('/auth');      
+      }
 }
+
 module.exports = auth

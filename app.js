@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
 
 
+
+
 require('dotenv').config();
 require('./config/passport')(passport);
 
@@ -27,6 +29,8 @@ const dbURI = process.env.DB_URI;
 
 //app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+hbs.registerPartials("./views/partials");
+hbs.registerPartials("./views/partialsAuth");
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -58,6 +62,10 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/index'))
 app.use('/login', require('./routes/login'))
 app.use('/register', require('./routes/register'))
+app.use('/user-home', require('./routes/user-home'))
+app.use('/course', require('./routes/course'))
+app.use('/logout', require('./routes/logout'))
+
 
 const PORT = process.env.PORT || 3000;
 
